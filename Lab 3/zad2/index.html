@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <title>Vue3 Simple Shopping Cart</title>
+
+   <link rel="stylesheet prefetch" href="css/bootstrap.min.css">
+   <link rel="stylesheet" href="css/style.css">
+   <script src="https://unpkg.com/vue@3"></script>
+</head>
+
+<body>
+<div id="app" class="container">
+   <div class="text-right">
+      <button class="btn btn-primary" data-toggle="modal" data-target="#cartModal">Cart ({{ cartItems.length }})</button>
+   </div>
+
+   <!-- Modal -->
+   <div class="modal fade" id="cartModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+         <div class="modal-content">
+            <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+               </button>
+               <h4 class="modal-title" id="myModalLabel">Cart</h4>
+            </div>
+            <div class="modal-body">
+               <table class="table table-cart">
+                  <tr v-for="(item, index) in cartItems" :key="item.id">
+                     <td>{{ item.title }}</td>
+                     <td style="width:120px">
+                        QTY:
+                        <input v-model="item.qty" class="form-control input-qty" type="number" min="1">
+                     </td>
+                     <td class="text-right">${{ formatCurrency(item.price) }}</td>
+                     <td>
+                        <button @click="removeItem(index)">
+                           <span>Remove</span>
+                        </button>
+                     </td>
+                  </tr>
+                  <tr v-show="cartItems.length === 0">
+                     <td colspan="4" class="text-center">Cart is empty</td>
+                  </tr>
+                  <tr v-show="cartItems.length > 0">
+                     <td></td>
+                     <td class="text-right">Cart Total</td>
+                     <td class="text-right">${{ formatCurrency(cartTotal) }}</td>
+                     <td></td>
+                  </tr>
+               </table>
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <div class="container">
+      <div class="row">
+         <div class="col-xs-3 text-center" v-for="item in products" :key="item.id">
+            <img :src="item.image" class="img-responsive" alt="">
+            <h5>{{ item.title }}</h5>
+            <h6>${{ formatCurrency(item.price) }}</h6>
+            <p class="text-center">
+               <input v-model.number="item.qty" type="number" class="form-control" placeholder="Qty" min="1">
+            </p>
+            <button @click="addToCart(item)" class="btn btn-sm btn-primary">Add to Cart</button>
+         </div>
+      </div>
+   </div>
+</div>
+
+<script src="js/jquery.3.1.1.min.js"></script>
+<script src="js/bootstrap.3.3.7.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+
+</html>
